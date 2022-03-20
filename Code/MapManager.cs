@@ -5,21 +5,34 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    public GameObject tile_unit;
-    public float tile_offset_x = -0.2f;
-    public float tile_offset_y = 0.02f;
+    private GameObject tile_unit;
+    private float tile_offset_x = -0.2f;
+    private float tile_offset_y = 0.02f;
 
-
-    public List<List<Tile>> CreateTileMap(string file_path)
+    public void Init()
     {
+        tile_unit = Resources.Load("tile_unit") as GameObject;
+    }
+
+    private void CreateBackGround(string cur_path)
+    {
+        GameObject obj = Resources.Load("Background") as GameObject;
+        GameObject backGround = Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
+        backGround.transform.SetParent(this.transform);
+    }
+
+    public List<List<Tile>> CreateTileMap(string cur_path)
+    {
+        CreateBackGround(cur_path);
+
         List<List<Tile>> tiles = new List<List<Tile>>();
 
         try
         {
-            string[] map_data = System.IO.File.ReadAllLines(file_path);
-            if(map_data.Length == 0)
+            string[] map_data = System.IO.File.ReadAllLines(string.Format("{0}/Assets/MapData/map_data.txt", cur_path));
+            if (map_data.Length == 0)
             {
-                Debug.LogError(String.Format("{0} is Empty", file_path));
+                Debug.LogError(String.Format("map_data.txt is Empty"));
             }
             else
             {

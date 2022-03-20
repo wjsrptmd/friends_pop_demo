@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
-    public GameObject apeach;
-    public GameObject muzi;
-    public GameObject neo;
-    public GameObject ryan;
-    public GameObject breakBlock;
-    public GameObject empty;
+    private GameObject apeach;
+    private GameObject muzi;
+    private GameObject neo;
+    private GameObject ryan;
+    private GameObject breakBlock;
+    private GameObject empty;
 
-    public GameObject special_block1;
-    public GameObject special_block2;
-    public GameObject special_block3;
+    private GameObject special_block1;
+    private GameObject special_block2;
+    private GameObject special_block3;
 
     List<Stack<Block>> block_stack;
     List<Stack<SpecialBlock>> special_block_stack;
@@ -27,6 +27,17 @@ public class BlockManager : MonoBehaviour
         special_block_stack = new List<Stack<SpecialBlock>>();
         this.dy = dy;
         this.dx = dx;
+
+        apeach = Resources.Load("apeach") as GameObject;
+        muzi = Resources.Load("muzi") as GameObject;
+        neo = Resources.Load("neo1") as GameObject;
+        ryan = Resources.Load("ryan") as GameObject;
+        breakBlock = Resources.Load("breakBlock") as GameObject;
+        empty = Resources.Load("empty") as GameObject;
+
+        special_block1 = Resources.Load("special_block1") as GameObject;
+        special_block2 = Resources.Load("special_block2") as GameObject;
+        special_block3 = Resources.Load("special_block3") as GameObject;
     }
 
     public void PushBlock(Block block, EnumBlockType type)

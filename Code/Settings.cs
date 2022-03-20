@@ -7,10 +7,10 @@ public class Settings : MonoBehaviour
     public float offset_create_new_block = 0.7f;
     public float offset_start_x = -2.6f;
     public float offset_start_y = -1.5f;
-    public float move_speed = 6f;
-    public int switch_delay = 200;
-    public int break_delay = 150;
-    public float missile_speed = 6f;
+    public float move_speed = 10f;
+    public int switch_delay = 20;
+    public int break_delay = 20;
+    public float missile_speed = 10f;
 
     private static Settings instance;
     public static Settings Instance() { return instance; }

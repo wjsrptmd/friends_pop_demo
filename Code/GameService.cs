@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GameService : MonoBehaviour
 {
-    public MapManager mapMng;
-    public BlockManager blockMng;
+    private MapManager mapMng;
+    private BlockManager blockMng;
 
     private List<List<Tile>> tiles;
     private List<List<List<int>>> break_count;
@@ -26,13 +26,61 @@ public class GameService : MonoBehaviour
 
     private int random_idx = 0;
 
+    void CreateMapManager(string name)
+    {
+        GameObject mapMngObj = new GameObject();
+        mapMngObj.name = name;
+        mapMngObj.transform.SetParent(this.transform);
+        mapMng = mapMngObj.AddComponent<MapManager>();
+        mapMng.Init();
+    }
+
+    void CreateBlockManager(string name)
+    {
+        GameObject blockMngObj = new GameObject();
+        blockMngObj.name = name;
+        blockMngObj.transform.SetParent(this.transform);
+        blockMng = blockMngObj.AddComponent<BlockManager>();
+        blockMng.Init(dy, dx);
+    }
+
+    void CreateSettings(string name)
+    {
+        GameObject Settings = new GameObject();
+        Settings.name = name;
+        Settings.transform.SetParent(this.transform);
+        Settings.AddComponent<Settings>();
+    }
+
+    void CreateRingObjManager(string name)
+    {
+        GameObject ringObjMng = new GameObject();
+        ringObjMng.name = name;
+        ringObjMng.transform.SetParent(this.transform);
+        ringObjMng.AddComponent<RingObjManager>();
+    }
+
+    void CreateMissileObjManager(string name)
+    {
+        GameObject missileObjManager = new GameObject();
+        missileObjManager.name = name;
+        missileObjManager.transform.SetParent(this.transform);
+        missileObjManager.AddComponent<MissileObjManager>();
+    }
+
     void Start()
     {
+        CreateMapManager("MapManager");
+        CreateBlockManager("BlockManager");
+        CreateSettings("Settings");
+        CreateRingObjManager("RingObjManager");
+        CreateMissileObjManager("MissileObjManager");
+
         switch_tiles = new List<Tile>();
 
-        string file_path = string.Format("{0}/Assets/MapData/map_data.txt", System.IO.Directory.GetCurrentDirectory());
+        string cur_path = System.IO.Directory.GetCurrentDirectory();
 
-        tiles = mapMng.CreateTileMap(file_path);
+        tiles = mapMng.CreateTileMap(cur_path);
         n = tiles.Count;
         m = tiles[0].Count;
         InitPlaceBlocks(tiles);
@@ -114,8 +162,6 @@ public class GameService : MonoBehaviour
 
     void InitPlaceBlocks(List<List<Tile>> tiles)
     {
-        blockMng.Init(dy, dx);
-
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
