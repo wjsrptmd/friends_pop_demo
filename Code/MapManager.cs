@@ -10,7 +10,7 @@ public class MapManager : MonoBehaviour
     public float tile_offset_y = 0.02f;
 
 
-    public List<List<Tile>> CreateMap(string file_path)
+    public List<List<Tile>> CreateTileMap(string file_path)
     {
         List<List<Tile>> tiles = new List<List<Tile>>();
 
@@ -32,54 +32,46 @@ public class MapManager : MonoBehaviour
                 float unit_x = bounds.size.x + tile_offset_x;
                 float unit_y = bounds.size.y + tile_offset_y;
 
-                float start_x = (x_size - 1) * (unit_x / 2) * (-1);
-                float start_y = (y_size - 1) * (unit_y / 2);
+                float start_x = (x_size - 1) * (unit_x / 2) + Settings.Instance().offset_start_x;
+                float start_y = (y_size - 1) * (unit_y / 2) + Settings.Instance().offset_start_y;
 
                 float cur_x = 0;
                 float cur_y = 0;
 
                 for (int i = 0; i < y_size; i++)
                 {
-                    cur_x = start_x;
-                    cur_y = start_y - (unit_y * i);
+                    cur_y = start_y;
+                    cur_x = start_x - (unit_x * 2 * i);
 
-                    int cnt = 0;
                     List<Tile> list = new List<Tile>();
-                    foreach(char ch in map_data[i])
+                    for (int j = 0; j < x_size; j++)
                     {
-                        int type = Convert.ToInt32(ch - '0');
-                        Tile tile = new Tile()
+                        int type = Convert.ToInt32(map_data[i][j] - '0');
+                        EnumBlockType block_type = EnumClass.IntToEnumBlock(type);
+                        Vector3 pos = new Vector3(cur_x, cur_y, 0);
+                        Tile tile;
+                        if (block_type != EnumBlockType.None)
                         {
-                            pos = new Vector3(cur_x, cur_y, 0),
-                            block_type = EnumClass.IntToEnumBlock(type)
-                        };
-                        
-
-                        list.Add(tile);
-                        cur_x += unit_x;
-                        if(cnt % 2 == 0)
-                        {
-                            cur_y += unit_y / 2;
+                            GameObject obj = Instantiate(tile_unit, pos, Quaternion.identity);
+                            obj.AddComponent<Tile>();
+                            tile = obj.GetComponent<Tile>();
+                            obj.transform.SetParent(this.transform);
                         } else
                         {
-                            cur_y -= unit_y / 2;
+                            tile = gameObject.AddComponent<Tile>();
                         }
-                        cnt++;
+
+                        tile.y = i;
+                        tile.x = j;
+                        tile.pos = new Vector3(cur_x, cur_y, 0);
+                        tile.block_type = EnumClass.IntToEnumBlock(type);                        
+
+                        list.Add(tile);
+
+                        cur_y -= (unit_y / 2);
+                        cur_x += unit_x;
                     }
                     tiles.Add(list);
-                }
-
-                foreach(List<Tile> list in tiles)
-                {
-                    foreach(Tile tile in list) {
-                        if (tile.block_type != EnumBlockType.None)
-                        {
-                            GameObject obj = Instantiate(tile_unit, tile.pos, Quaternion.identity);
-                            obj.AddComponent<CircleCollider2D>();
-                            obj.GetComponent<CircleCollider2D>().isTrigger = true;
-                            obj.transform.SetParent(this.transform);
-                        }
-                    }
                 }
             }
         }
