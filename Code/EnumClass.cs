@@ -7,14 +7,17 @@ public enum EnumBlockType
     Apeach,
     Muzi,
     Neo,
-    Ryan
+    Ryan,
+    Empty,
+    Break
 }
 
-public enum EnumMove
+public enum EnumSwitch
 {
-    Stop,
-    Moving,
-    Moved
+    None,
+    FirstSwitch,
+    SecondSwitch,
+    Switched,
 }
 
 public class EnumClass

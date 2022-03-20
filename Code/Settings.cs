@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Settings : MonoBehaviour
 {
-    private float unit_x = 0;
-    private float unit_y = 0;
+    public float offset_create_new_block = 0.7f;
+    public float offset_start_x = -2.6f;
+    public float offset_start_y = -1.5f;
+    public float move_speed = 6f;
+    public int switch_delay = 200;
+    public int break_delay = 150;
+    public float missile_speed = 6f;
 
     private static Settings instance;
     public static Settings Instance() { return instance; }
@@ -16,11 +21,5 @@ public class Settings : MonoBehaviour
         {
             instance = this;
         }
-    }
-
-    void SetUnitXY(float unit_x, float unit_y)
-    {
-        this.unit_x = unit_x;
-        this.unit_y = unit_y;
     }
 }
