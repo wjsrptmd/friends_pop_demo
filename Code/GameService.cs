@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameService : MonoBehaviour
 {
@@ -26,61 +27,19 @@ public class GameService : MonoBehaviour
 
     private int random_idx = 0;
 
-    void CreateMapManager(string name)
-    {
-        GameObject mapMngObj = new GameObject();
-        mapMngObj.name = name;
-        mapMngObj.transform.SetParent(this.transform);
-        mapMng = mapMngObj.AddComponent<MapManager>();
-        mapMng.Init();
-    }
-
-    void CreateBlockManager(string name)
-    {
-        GameObject blockMngObj = new GameObject();
-        blockMngObj.name = name;
-        blockMngObj.transform.SetParent(this.transform);
-        blockMng = blockMngObj.AddComponent<BlockManager>();
-        blockMng.Init(dy, dx);
-    }
-
-    void CreateSettings(string name)
-    {
-        GameObject Settings = new GameObject();
-        Settings.name = name;
-        Settings.transform.SetParent(this.transform);
-        Settings.AddComponent<Settings>();
-    }
-
-    void CreateRingObjManager(string name)
-    {
-        GameObject ringObjMng = new GameObject();
-        ringObjMng.name = name;
-        ringObjMng.transform.SetParent(this.transform);
-        ringObjMng.AddComponent<RingObjManager>();
-    }
-
-    void CreateMissileObjManager(string name)
-    {
-        GameObject missileObjManager = new GameObject();
-        missileObjManager.name = name;
-        missileObjManager.transform.SetParent(this.transform);
-        missileObjManager.AddComponent<MissileObjManager>();
-    }
-
     void Start()
     {
+        CreateTitle();
         CreateMapManager("MapManager");
         CreateBlockManager("BlockManager");
         CreateSettings("Settings");
         CreateRingObjManager("RingObjManager");
         CreateMissileObjManager("MissileObjManager");
+        CreateQuitObj();
 
         switch_tiles = new List<Tile>();
 
-        string cur_path = System.IO.Directory.GetCurrentDirectory();
-
-        tiles = mapMng.CreateTileMap(cur_path);
+        tiles = mapMng.CreateTileMap();
         n = tiles.Count;
         m = tiles[0].Count;
         InitPlaceBlocks(tiles);
@@ -102,9 +61,11 @@ public class GameService : MonoBehaviour
             break_count.Add(breaks);
         }
 
+#if UNITY_EDITOR
         Tile.OnClickEnter += BlockClickEnter;
         Tile.OnClickeDown += BlockClickDown;
         Tile.OnClickUp += BlockClickUp;
+#endif
     }
 
     void Update()
@@ -153,6 +114,11 @@ public class GameService : MonoBehaviour
             ClearSwitchBlock();
             return;
         }
+
+#if UNITY_EDITOR
+#else
+        CheckTouch();
+#endif
 
         if (switch_tiles.Count == 2)
         {
@@ -540,9 +506,37 @@ public class GameService : MonoBehaviour
         switch_tiles.Clear();
     }
 
+    void CheckTouch()
+    {
+        if (Input.touchCount > 0) 
+        {
+            Touch touch = Input.GetTouch(0);
+            if(touch.phase == TouchPhase.Moved)
+            {
+                Vector2 touch_pos = Camera.main.ScreenToWorldPoint(touch.position);
+                foreach (List<Tile> list in tiles)
+                {
+                    foreach (Tile tile in list)
+                    {
+                        if (tile.block_type != EnumBlockType.None &&
+                            tile.GetComponent<CircleCollider2D>().OverlapPoint(touch_pos))
+                        {
+                            if (touch.phase == TouchPhase.Moved)
+                            {
+                                BlockClickEnter(tile);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     void BlockClickUp()
     {
-        if(switch_tiles.Count < 2)
+        if (switch_tiles.Count < 2)
         {
             ClearSwitchBlock();
         }
@@ -550,7 +544,7 @@ public class GameService : MonoBehaviour
 
     void BlockClickDown(Tile tile)
     {
-        if(switch_tiles.Count == 0)
+        if (switch_tiles.Count == 0)
         {
             switch_tiles.Add(tile);
         }
@@ -560,29 +554,41 @@ public class GameService : MonoBehaviour
     {
         if (switch_tiles.Count == 1)
         {
-            int dis_y = tile.y - switch_tiles[0].y;
-            int dis_x = tile.x - switch_tiles[0].x;
-
-            bool isOk = false;
-            for(int i = 0; i < dir_count; i++)
+            Tile prev_tile = switch_tiles[0];
+            if(prev_tile.y != tile.y || prev_tile.x != tile.x)
             {
-                if(dis_y*dis_y == dy[i]*dy[i] && dis_x*dis_x == dx[i]*dx[i])
+                int dis_y = tile.y - switch_tiles[0].y;
+                int dis_x = tile.x - switch_tiles[0].x;
+
+                bool isOk = false;
+                for (int i = 0; i < dir_count; i++)
                 {
-                    isOk = true;
+                    if (dis_y * dis_y == dy[i] * dy[i] && dis_x * dis_x == dx[i] * dx[i])
+                    {
+                        isOk = true;
+                    }
+                }
+
+                if (isOk)
+                {
+                    switch_tiles.Add(tile);
+                }
+                else
+                {
+                    switch_count = 0;
+                    switch_delay = 0;
+                    switch_tiles.Clear();
                 }
             }
-
-            if(isOk)
-            {
-                switch_tiles.Add(tile);                
-            }
-            else
-            {
-                switch_count = 0;
-                switch_delay = 0;
-                switch_tiles.Clear();
-            }
         }
+
+#if UNITY_EDITOR
+#else
+        if (switch_tiles.Count == 0)
+        {
+            BlockClickDown(tile);
+        }
+#endif
     }
 
     void SwitchTiles()
@@ -645,5 +651,62 @@ public class GameService : MonoBehaviour
         }        
     }
 
-    
+    void CreateTitle()
+    {
+        GameObject obj = Resources.Load("title_obj") as GameObject;
+        GameObject titleObj = Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
+        titleObj.transform.SetParent(this.transform);
+        titleObj.transform.position = new Vector3(-0.2f, 3.5f, 0);
+    }
+
+    void CreateMapManager(string name)
+    {
+        GameObject mapMngObj = new GameObject();
+        mapMngObj.name = name;
+        mapMngObj.transform.SetParent(this.transform);
+        mapMng = mapMngObj.AddComponent<MapManager>();
+        mapMng.Init();
+    }
+
+    void CreateBlockManager(string name)
+    {
+        GameObject blockMngObj = new GameObject();
+        blockMngObj.name = name;
+        blockMngObj.transform.SetParent(this.transform);
+        blockMng = blockMngObj.AddComponent<BlockManager>();
+        blockMng.Init(dy, dx);
+    }
+
+    void CreateSettings(string name)
+    {
+        GameObject Settings = new GameObject();
+        Settings.name = name;
+        Settings.transform.SetParent(this.transform);
+        Settings.AddComponent<Settings>();
+    }
+
+    void CreateRingObjManager(string name)
+    {
+        GameObject ringObjMng = new GameObject();
+        ringObjMng.name = name;
+        ringObjMng.transform.SetParent(this.transform);
+        ringObjMng.AddComponent<RingObjManager>();
+    }
+
+    void CreateMissileObjManager(string name)
+    {
+        GameObject missileObjManager = new GameObject();
+        missileObjManager.name = name;
+        missileObjManager.transform.SetParent(this.transform);
+        missileObjManager.AddComponent<MissileObjManager>();
+    }
+
+    void CreateQuitObj()
+    {
+        GameObject obj = Resources.Load("quit_obj") as GameObject;
+        GameObject quitObj = Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
+        quitObj.transform.SetParent(this.transform);
+        quitObj.transform.position = new Vector3(1.8f, 3.5f, 0);
+    }
+
 }

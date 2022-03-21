@@ -6,30 +6,32 @@ using UnityEngine;
 public class MapManager : MonoBehaviour
 {
     private GameObject tile_unit;
-    private float tile_offset_x = -0.2f;
-    private float tile_offset_y = 0.02f;
+    private float tile_offset_x = -0.15f;
+    private float tile_offset_y = 0.010f;
 
     public void Init()
     {
         tile_unit = Resources.Load("tile_unit") as GameObject;
     }
 
-    private void CreateBackGround(string cur_path)
+    private void CreateBackGround()
     {
         GameObject obj = Resources.Load("Background") as GameObject;
         GameObject backGround = Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
         backGround.transform.SetParent(this.transform);
     }
 
-    public List<List<Tile>> CreateTileMap(string cur_path)
+    public List<List<Tile>> CreateTileMap()
     {
-        CreateBackGround(cur_path);
+        CreateBackGround();
 
         List<List<Tile>> tiles = new List<List<Tile>>();
 
         try
         {
-            string[] map_data = System.IO.File.ReadAllLines(string.Format("{0}/Assets/MapData/map_data.txt", cur_path));
+            TextAsset txt_file = Resources.Load<TextAsset>("MapData/map_data");            
+            string[] map_data = txt_file.text.Split(new[] { "\r\n", "\r", "\n"}, StringSplitOptions.None);
+
             if (map_data.Length == 0)
             {
                 Debug.LogError(String.Format("map_data.txt is Empty"));
@@ -53,6 +55,8 @@ public class MapManager : MonoBehaviour
 
                 for (int i = 0; i < y_size; i++)
                 {
+                    if (map_data[i].Length == 0) break;
+
                     cur_y = start_y;
                     cur_x = start_x - (unit_x * 2 * i);
 
@@ -69,7 +73,8 @@ public class MapManager : MonoBehaviour
                             obj.AddComponent<Tile>();
                             tile = obj.GetComponent<Tile>();
                             obj.transform.SetParent(this.transform);
-                        } else
+                        }
+                        else
                         {
                             tile = gameObject.AddComponent<Tile>();
                         }
@@ -77,7 +82,7 @@ public class MapManager : MonoBehaviour
                         tile.y = i;
                         tile.x = j;
                         tile.pos = new Vector3(cur_x, cur_y, 0);
-                        tile.block_type = EnumClass.IntToEnumBlock(type);                        
+                        tile.block_type = EnumClass.IntToEnumBlock(type);
 
                         list.Add(tile);
 

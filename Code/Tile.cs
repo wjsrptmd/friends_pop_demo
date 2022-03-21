@@ -12,15 +12,6 @@ public class Tile : MonoBehaviour
     public int y = 0;
     public int x = 0;
 
-    public delegate void ClickEnterEvent(Tile tile);
-    public static event ClickEnterEvent OnClickEnter;
-
-    public delegate void ClickDownEvent(Tile tile);
-    public static event ClickDownEvent OnClickeDown;
-
-    public delegate void ClickUpEvent();
-    public static event ClickUpEvent OnClickUp;
-
     public bool IsBlockLocated()
     {
         if (block == null) return false;
@@ -45,6 +36,16 @@ public class Tile : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
+    public delegate void ClickEnterEvent(Tile tile);
+    public static event ClickEnterEvent OnClickEnter;
+
+    public delegate void ClickDownEvent(Tile tile);
+    public static event ClickDownEvent OnClickeDown;
+
+    public delegate void ClickUpEvent();
+    public static event ClickUpEvent OnClickUp;
+
     private void OnMouseDown()
     {
         OnClickeDown(this);
@@ -59,4 +60,5 @@ public class Tile : MonoBehaviour
     {
         OnClickUp();
     }
+#endif
 }
