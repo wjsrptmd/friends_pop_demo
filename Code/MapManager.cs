@@ -17,6 +17,7 @@ public class MapManager : MonoBehaviour
     private void CreateBackGround()
     {
         GameObject obj = Resources.Load("Background") as GameObject;
+        obj.GetComponent<SpriteRenderer>().sortingOrder = -1;
         GameObject backGround = Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
         backGround.transform.SetParent(this.transform);
     }

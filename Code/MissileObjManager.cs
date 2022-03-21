@@ -18,6 +18,10 @@ public class MissileObjManager : MonoBehaviour
         missile_1 = Resources.Load("missile_1") as GameObject;
         missile_2 = Resources.Load("missile_2") as GameObject;
         missile_3 = Resources.Load("missile_3") as GameObject;
+
+        missile_1.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        missile_2.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        missile_3.GetComponent<SpriteRenderer>().sortingOrder = 1;
     }
 
     void Awake()
