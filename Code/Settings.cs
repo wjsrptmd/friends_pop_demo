@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Settings : MonoBehaviour
 {
-    public float offset_create_new_block = 0.7f;
-    public float offset_start_x = -2.6f;
-    public float offset_start_y = -1.5f;
+    public float offset_create_new_block = 0.5f;
+    public float offset_start_x = -2.2f;
+    public float offset_start_y = -1.8f;
     public float move_speed = 10f;
     public int switch_delay = 20;
     public int break_delay = 20;
