@@ -704,6 +704,7 @@ public class GameService : MonoBehaviour
     void CreateQuitObj()
     {
         GameObject obj = Resources.Load("quit_obj") as GameObject;
+        obj.AddComponent<QuitMonitor>();
         GameObject quitObj = Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
         quitObj.transform.SetParent(this.transform);
         quitObj.transform.position = new Vector3(1.8f, 3.5f, 0);
