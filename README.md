@@ -1,7 +1,7 @@
 # friends_pop_demo
 
 ### 목적 : 프렌즈팝 모방, 연습용 프로젝트
-* 프렌즈팝 레벨 5 https://www.youtube.com/watch?v=s0N5e7URge0&list=WL&index=7&t=9s
+* 핸드폰에서 실행했을때 의 영상 : https://youtu.be/HfzoE8oXSjg
 
 ### 타겟 플랫폼 : Android
 * Unity Editor 에서 실행할 경우 마우스로 컨트롤 한다.
