@@ -8,14 +8,13 @@
 * 핸드폰에서 실행할 때는 터치 적용.
 
 ### 실행 방법
-* 파일을 내려 받는다. (Animation/Code/Resources)
+* 파일을 내려 받는다. (Code/Resources)
 * 내려 받은 파일을 Unity Editor 의 `Asset` 밑으로 이동시킨다.
-  * Asset/Animation/
   * Asset/Code/
   * Asset/Resources/
 * Unity Editor 에서 빈 오브젝트를 생성한다. `Create Epmpty`
-  * 빈 오브젝트의 이름은 임의로 정한다. (예 : `GameService`)
-  * 빈 오브제트에 `Code/GameService.cs` 스크립트를 추가한다. `AddComponent`
+  * 빈 오브젝트의 이름은 임의로 정한다. (예 : GameService)
+  * 빈 오브제트에 Code/GameService.cs 스크립트를 추가한다. `AddComponent` `GameService.cs`
 * 게임을 실행한다.
 
 ### 진행 상황
