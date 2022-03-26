@@ -28,16 +28,20 @@ public class BlockManager : MonoBehaviour
         this.dy = dy;
         this.dx = dx;
 
-        apeach = Resources.Load("apeach") as GameObject;
-        muzi = Resources.Load("muzi") as GameObject;
-        neo = Resources.Load("neo1") as GameObject;
-        ryan = Resources.Load("ryan") as GameObject;
-        breakBlock = Resources.Load("breakBlock") as GameObject;
-        empty = Resources.Load("empty") as GameObject;
+        apeach = Util.CreateObjForPng("apeach", new Vector3(0.06f, 0.06f, 0));
+        muzi = Util.CreateObjForPng("muzi",new Vector3(0.08f, 0.08f, 0));
+        neo = Util.CreateObjForPng("neo", new Vector3(0.08f, 0.08f, 0));
+        ryan = Util.CreateObjForPng("ryan", new Vector3(0.08f, 0.08f, 0));        
 
-        special_block1 = Resources.Load("special_block1") as GameObject;
-        special_block2 = Resources.Load("special_block2") as GameObject;
-        special_block3 = Resources.Load("special_block3") as GameObject;
+        special_block1 = Util.CreateObjForPng("SpecialBlock1", new Vector3(0.08f, 0.08f, 0));
+        special_block2 = Util.CreateObjForPng("SpecialBlock2", new Vector3(0.08f, 0.08f, 0));
+        special_block3 = Util.CreateObjForPng("SpecialBlock3", new Vector3(0.08f, 0.08f, 0));
+
+        empty = Util.CreatEmptyObj("empty");
+        breakBlock = Util.CreatEmptyObj("breakBlock");
+        breakBlock.AddComponent<Animator>();
+        breakBlock.GetComponent<Animator>().runtimeAnimatorController = 
+            Resources.Load<RuntimeAnimatorController>("Animation/BreakBlock");
     }
 
     public void PushBlock(Block block, EnumBlockType type)

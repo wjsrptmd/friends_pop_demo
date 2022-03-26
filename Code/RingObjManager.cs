@@ -13,7 +13,7 @@ public class RingObjManager : MonoBehaviour
     void Start()
     {
         s = new Stack<GameObject>();
-        obj = Resources.Load("ring") as GameObject;
+        obj = Util.CreateObjForPng("ring", new Vector3(0.01f, 0.01f, 0));
     }
 
     void Awake()

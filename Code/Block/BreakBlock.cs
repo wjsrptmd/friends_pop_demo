@@ -51,7 +51,7 @@ public class BreakBlock : Block
 
     private void StartAnim()
     {
-        obj.GetComponent<Animator>().speed = 1.0f;
+        obj.GetComponent<Animator>().speed = 2.0f;
     }
 
     private void StopAnim()

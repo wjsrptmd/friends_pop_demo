@@ -11,21 +11,13 @@ public class MapManager : MonoBehaviour
 
     public void Init()
     {
-        tile_unit = Resources.Load("tile_unit") as GameObject;
-    }
-
-    private void CreateBackGround()
-    {
-        GameObject obj = Resources.Load("Background") as GameObject;
-        obj.GetComponent<SpriteRenderer>().sortingOrder = -1;
-        GameObject backGround = Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
-        backGround.transform.SetParent(this.transform);
+        tile_unit = Util.CreateObjForPng("tile_unit", new Vector3(0.08f, 0.08f, 0));
+        tile_unit.AddComponent<CircleCollider2D>();
+        tile_unit.GetComponent<CircleCollider2D>().isTrigger = true;
     }
 
     public List<List<Tile>> CreateTileMap()
     {
-        CreateBackGround();
-
         List<List<Tile>> tiles = new List<List<Tile>>();
 
         try
@@ -71,6 +63,7 @@ public class MapManager : MonoBehaviour
                         if (block_type != EnumBlockType.None)
                         {
                             GameObject obj = Instantiate(tile_unit, pos, Quaternion.identity);
+                            obj.SetActive(true);
                             obj.AddComponent<Tile>();
                             tile = obj.GetComponent<Tile>();
                             obj.transform.SetParent(this.transform);
