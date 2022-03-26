@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MissileObjManager : MonoBehaviour
 {
-    public GameObject missile_1;
-    public GameObject missile_2;
-    public GameObject missile_3;
+    private GameObject missile_1;
+    private GameObject missile_2;
+    private GameObject missile_3;
     private List<Stack<GameObject>> s;
 
     private static MissileObjManager instance;
@@ -15,9 +15,9 @@ public class MissileObjManager : MonoBehaviour
     void Start()
     {
         s = new List<Stack<GameObject>>();
-        missile_1 = Resources.Load("missile_1") as GameObject;
-        missile_2 = Resources.Load("missile_2") as GameObject;
-        missile_3 = Resources.Load("missile_3") as GameObject;
+        missile_1 = Util.CreateObjForPng("missile1", new Vector3(0.08f, 0.08f, 0));
+        missile_2 = Util.CreateObjForPng("missile2", new Vector3(0.08f, 0.08f, 0));
+        missile_3 = Util.CreateObjForPng("missile3", new Vector3(0.08f, 0.08f, 0));
 
         missile_1.GetComponent<SpriteRenderer>().sortingOrder = 1;
         missile_2.GetComponent<SpriteRenderer>().sortingOrder = 1;

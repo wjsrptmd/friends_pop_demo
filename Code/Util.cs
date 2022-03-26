@@ -26,4 +26,24 @@ public class Util
         }
         return color;
     }
+
+    public static GameObject CreateObjForPng(string png_file_name, Vector3 scale)
+    {
+        GameObject obj = new GameObject();
+        obj.AddComponent<SpriteRenderer>();
+        obj.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(png_file_name);
+        obj.name = png_file_name;
+        obj.transform.localScale = scale;
+        obj.SetActive(false);
+        return obj;
+    }
+
+    public static GameObject CreatEmptyObj(string name)
+    {
+        GameObject obj = new GameObject();
+        obj.name = name;
+        obj.AddComponent<SpriteRenderer>();
+        obj.SetActive(false);
+        return obj;
+    }
 }

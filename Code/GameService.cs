@@ -653,10 +653,13 @@ public class GameService : MonoBehaviour
 
     void CreateTitle()
     {
-        GameObject obj = Resources.Load("title_obj") as GameObject;
-        GameObject titleObj = Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject titleObj = Util.CreateObjForPng("titleObj", new Vector3(0.3f, 0.3f, 0));
+        Color color;
+        ColorUtility.TryParseHtmlString("#FFA600", out color);
+        titleObj.GetComponent<SpriteRenderer>().color = color;
         titleObj.transform.SetParent(this.transform);
         titleObj.transform.position = new Vector3(-0.2f, 3.5f, 0);
+        titleObj.SetActive(true);
     }
 
     void CreateMapManager(string name)
@@ -702,12 +705,16 @@ public class GameService : MonoBehaviour
     }
 
     void CreateQuitObj()
-    {
-        GameObject obj = Resources.Load("quit_obj") as GameObject;
-        obj.AddComponent<QuitMonitor>();
-        GameObject quitObj = Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
+    {        
+        GameObject quitObj = Util.CreateObjForPng("quit_obj", new Vector3(0.2f, 0.2f, 0));
+        Color color;
+        ColorUtility.TryParseHtmlString("#FFA600", out color);
+        quitObj.GetComponent<SpriteRenderer>().color = color;
+        quitObj.AddComponent<QuitMonitor>();
+        quitObj.AddComponent<BoxCollider2D>();
         quitObj.transform.SetParent(this.transform);
         quitObj.transform.position = new Vector3(1.8f, 3.5f, 0);
+        quitObj.SetActive(true);
     }
 
 }
