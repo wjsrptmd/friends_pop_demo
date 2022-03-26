@@ -1,7 +1,7 @@
 # friends_pop_demo
 
 ### 목적 : 프렌즈팝 모방, 연습용 프로젝트
-* 핸드폰에서 실행했을때 의 영상 : https://youtu.be/u4hqDV54NOc
+* 핸드폰에서 실행했을때 의 영상 : https://youtu.be/Lc5WlTpR-3w
 
 ### 타겟 플랫폼 : Android
 * Unity Editor 에서 실행할 경우 마우스로 컨트롤 한다.
