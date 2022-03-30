@@ -12,14 +12,6 @@ public enum EnumBlockType
     Break
 }
 
-public enum EnumSwitch
-{
-    None,
-    FirstSwitch,
-    SecondSwitch,
-    Switched,
-}
-
 public class EnumClass
 {
     static public EnumBlockType IntToEnumBlock(int type)
