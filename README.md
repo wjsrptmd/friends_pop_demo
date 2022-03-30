@@ -14,6 +14,7 @@ classDiagram
 GameService "1" *-- "n" Tile
 GameService *-- BlockManager
 GameService *-- MapManager
+GameService --> Settings
 GameService :- List[List[Tile]] tiles //타일 맵
 GameService :- List[List[int]] break_count // 폭파 횟수 저장
 GameService :- List[Tile] switch_tiles // 블록이 스위칭 되고있는 타일, 항상 2개
@@ -37,6 +38,7 @@ GameService :- InitBreakCount()
 GameService :- ClearSwitchBlock()
 GameService :- InitTopTiles()
 
+MapManager --> Settings
 class MapManager{
  - GameObject tile_unit
  - float tile_offset_x
@@ -72,6 +74,7 @@ class BlockManager{
 }
 
 Tile *-- Block
+Tile --> Settings
 class Tile{
  + Vector3 pos
  + EnumBlockType block_type
@@ -84,6 +87,7 @@ class Tile{
 
 Block <|-- BreakBlock
 Block <|-- SpecialBlock
+Block --> Settings
 class Block{
  # GameObject obj
  # int break_delay
@@ -113,6 +117,9 @@ class BreakBlock{
  - IsPlayingAnim()
 }
 
+SpecialBlock --> MissileObjManager
+SpecialBlock --> RingObjManager
+SpecialBlock --> Settings
 class SpecialBlock{
  + int dy
  + int dx
@@ -129,6 +136,25 @@ class SpecialBlock{
  - BreakLine()
 }
 
+class MissileObjManager{
+<<Singleton>>
+ - GameObject missile_1
+ - GameObject missile_2
+ - GameObject missile_3
+ - List[Stack[GameObject]] s
+ - GetObj()
+ + PushObj()
+ + PopObj()
+}
+
+class RingObjManager{
+<<Singleton>>
+ - GameObject obj
+ - Stack[GameObject] s
+ + PushObj()
+ + PopObj()
+}
+
 class EnumBlockType{
 <<enumeration>>
  None,
@@ -141,13 +167,29 @@ class EnumBlockType{
 }
 
 class EnumClass{
- + IntToEnumBlock()
- + EnumBlockToInt()
+ +IntToEnumBlock()$
+ +EnumBlockToInt()$
 }
 
-class MissileObjManager{
+class QuitMonitor{
+ - Update()
+}
+
+class Settings{
 <<Singleton>>
- + int t
+ + float offset_create_new_block
+ + float offset_start_x
+ + float offset_start_y
+ + float move_speed
+ + int switch_delay
+ + int break_delay
+ + float missile_speed
+}
+
+class Util{
+ +GetColor()$
+ +CreateObjForPng()$
+ +CreatEmptyObj()$
 }
 ```
 
