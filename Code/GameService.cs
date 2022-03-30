@@ -261,7 +261,7 @@ public class GameService : MonoBehaviour
 
                 if(!tile.IsBlockLocated())
                 {
-                    tile.MoveObj();
+                    tile.MoveBlock();
                     cnt++;
                 }
             }
