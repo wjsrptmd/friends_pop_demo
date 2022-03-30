@@ -7,6 +7,80 @@
 * Unity Editor 에서 실행할 경우 마우스로 컨트롤 한다.
 * 핸드폰에서 실행할 때는 터치 적용.
 
+### 클래스 구조
+```mermaid
+classDiagram
+GameService *-- MapManager
+GameService *-- BlockManager
+GameService *-- Tile
+GameService :- List[List[Tile]] tiles //타일 맵
+GameService :- List[List[int]] break_count // 폭파 횟수 저장
+GameService :- List[Tile] switch_tiles // 블록이 스위칭 되고있는 타일, 항상 2개
+GameService :- List[Tile] top_tiles // 블록을 생성할 수 있는 타일
+GameService :- int n // 타일 맵 세로 크기
+GameService :- int m // 타일 맵 가로 크기
+GameService :- int switch_count
+GameService :- int switch_delay
+GameService :- int[] dy
+GameService :- int[] dx
+GameService :- int dir_count
+GameService :- int random_idx
+GameService :- Start()
+GameService :- Update()
+GameService :- MoveBlocks()
+GameService :- FillEmptyTile()
+GameService :- BreakBlock()
+GameService :- ChangeToNextBlock()
+GameService :- CheckBreakBlocks()
+GameService :- InitBreakCount()
+GameService :- ClearSwitchBlock()
+GameService :- InitTopTiles(List<List<Tile>> tiles)
+
+class MapManager{
+ - GameObject tile_unit
+ - float tile_offset_x
+ - float tile_offset_y
+ + Init()
+ + CreateTileMap()
+}
+
+class BlockManager{
+ - GameObject apeach
+ - GameObject muzi
+ - GameObject neo
+ - GameObject ryan
+ - GameObject breakBlock
+ - GameObject empty
+ - GameObject special_block1
+ - GameObject special_block2
+ - GameObject special_block3
+ - List[Stack[Block]] block_stack
+ - List[Stack[SpecialBlock]] special_block_stack
+ - int[] dy
+ - int[] dx
+ - GetSpecialBlockObj()
+ - SettColorSpecialBlockObj()
+ - CreateNewBlock()
+ - GetBlockObj()
+ + Init()
+ + PushBlock()
+ + PopBlock()
+ + PushSpecialBlock()
+ + PopSpecialBlock()
+}
+
+class Tile{
+ + Vector3 pos
+ + EnumBlockType block_type
+ + Block block
+ + bool isSelected
+ + int y
+ + int x
+ + IsBlockLocated()
+ + MoveObj()
+}
+```
+
 ### 실행 방법
 * 파일을 내려 받는다. (Code, Resources)
 * 내려 받은 파일을 Unity Editor 의 `Asset` 밑으로 이동시킨다.
