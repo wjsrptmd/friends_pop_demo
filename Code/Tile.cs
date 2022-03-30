@@ -19,18 +19,18 @@ public class Tile : MonoBehaviour
         return pos == block.Position();
     }
 
-    public void MoveObj()
+    public void MoveBlock()
     {
         if (block == null) return;
 
-        Vector3 obj_pos = block.Position();
-        if (obj_pos.y < pos.y)
+        Vector3 block_pos = block.Position();
+        if (block_pos.y < pos.y)
         {
             block.SetPosition(pos);
         }
         else
         {
-            Vector3 dir = (pos - obj_pos).normalized;
+            Vector3 dir = (pos - block_pos).normalized;
             float speed = Settings.Instance().move_speed;
             block.Translate(dir * speed * Time.deltaTime);
         }
