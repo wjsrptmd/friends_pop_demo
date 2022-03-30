@@ -10,9 +10,10 @@
 ### 클래스 구조
 ```mermaid
 classDiagram
-GameService *-- MapManager
+
+GameService "1" *-- "n" Tile
 GameService *-- BlockManager
-GameService *-- Tile
+GameService *-- MapManager
 GameService :- List[List[Tile]] tiles //타일 맵
 GameService :- List[List[int]] break_count // 폭파 횟수 저장
 GameService :- List[Tile] switch_tiles // 블록이 스위칭 되고있는 타일, 항상 2개
@@ -34,7 +35,7 @@ GameService :- ChangeToNextBlock()
 GameService :- CheckBreakBlocks()
 GameService :- InitBreakCount()
 GameService :- ClearSwitchBlock()
-GameService :- InitTopTiles(List<List<Tile>> tiles)
+GameService :- InitTopTiles()
 
 class MapManager{
  - GameObject tile_unit
@@ -44,6 +45,7 @@ class MapManager{
  + CreateTileMap()
 }
 
+BlockManager "1" *-- "n" Block
 class BlockManager{
  - GameObject apeach
  - GameObject muzi
@@ -69,15 +71,83 @@ class BlockManager{
  + PopSpecialBlock()
 }
 
+Tile *-- Block
 class Tile{
  + Vector3 pos
  + EnumBlockType block_type
- + Block block
  + bool isSelected
  + int y
  + int x
  + IsBlockLocated()
- + MoveObj()
+ + MoveBlock()
+}
+
+Block <|-- BreakBlock
+Block <|-- SpecialBlock
+class Block{
+ # GameObject obj
+ # int break_delay
+ # int break_count
+ + bool is_break
+ + GetObj()
+ + Init()
+ + IsBreakEnd()
+ + Break()
+ + StartBreak()
+ + CanChangeNextBlock()
+ + NextBlockType()
+ + CanMoveBlock()
+ + IsSpecialBlock()
+ + SetActive()
+ + SetObj()
+ + Position()
+ + SetPosition()
+ + Translate()
+ + SetBreakDelay()
+}
+
+class BreakBlock{
+ - string anim_name
+ - StartAnim()
+ - StopAnim()
+ - IsPlayingAnim()
+}
+
+class SpecialBlock{
+ + int dy
+ + int dx
+ + int dir
+ - Vector3 ring_max_scale
+ - Vector3 ring_min_scale
+ - Vector3 d_scale
+ - GameObject ring_obj
+ - GameObject missile_obj1
+ - GameObject missile_obj2
+ - Color color
+ - bool first_break
+ - MoveMissile()
+ - BreakLine()
+}
+
+class EnumBlockType{
+<<enumeration>>
+ None,
+ Apeach,
+ Muzi,
+ Neo,
+ Ryan,
+ Empty,
+ Break
+}
+
+class EnumClass{
+ + IntToEnumBlock()
+ + EnumBlockToInt()
+}
+
+class MissileObjManager{
+<<Singleton>>
+ + int t
 }
 ```
 
