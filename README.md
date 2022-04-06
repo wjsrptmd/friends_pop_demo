@@ -9,7 +9,7 @@
 
 ### 실행 방법
 * 파일을 내려 받는다. (Code, Resources)
-* 내려 받은 파일을 Unity Editor 의 `Asset` 밑으로 이동시킨다.
+* 내려 받은 파일을 `Unity Editor` 의 `Asset` 밑으로 이동시킨다.
   * Asset/Code/
   * Asset/Resources/
 * Unity Editor 에서 빈 오브젝트를 생성한다. `Create Epmpty`
